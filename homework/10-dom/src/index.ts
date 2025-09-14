@@ -22,8 +22,8 @@ calcButton.addEventListener('click', () => {
     inputNumber = parseInt(secound.value) / parseInt(first.value);
   }
 
-  if(inputNumber < 0){
-    inputNumber *= -1
+  if (inputNumber < 0) {
+    inputNumber *= -1;
   }
   counter.textContent = `${inputNumber}`;
 });
