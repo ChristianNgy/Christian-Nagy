@@ -1,16 +1,29 @@
-const counter = document.getElementById('counter') as HTMLParagraphElement
-const first = document.getElementById('first') as HTMLInputElement
-const secound = document.getElementById('secound') as HTMLInputElement
+const counter = document.getElementById('counter') as HTMLParagraphElement;
+const first = document.getElementById('first') as HTMLInputElement;
+const secound = document.getElementById('secound') as HTMLInputElement;
+const calcButton = document.getElementById('calcButton') as HTMLButtonElement;
+const select = document.getElementById('select') as HTMLSelectElement;
 
+let operation: string;
+let inputNumber = 0;
 
-let inputNumber = 0
-let a = 0
-let b = 0
+select.addEventListener('change', () => {
+  operation = select.value;
+});
 
-first.addEventListener('click', () => {
-    a = parseInt(first.value)
-    b = parseInt(secound.value)
-    inputNumber = a += b
-    
-    counter.textContent = `${inputNumber}`
-})
+calcButton.addEventListener('click', () => {
+  if (operation === '+') {
+    inputNumber = parseInt(secound.value) + parseInt(first.value);
+  } else if (operation === '-') {
+    inputNumber = parseInt(secound.value) - parseInt(first.value);
+  } else if (operation === '*') {
+    inputNumber = parseInt(secound.value) * parseInt(first.value);
+  } else if (operation === '/') {
+    inputNumber = parseInt(secound.value) / parseInt(first.value);
+  }
+
+  if(inputNumber < 0){
+    inputNumber *= -1
+  }
+  counter.textContent = `${inputNumber}`;
+});
