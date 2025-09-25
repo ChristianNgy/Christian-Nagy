@@ -1,3 +1,5 @@
-const helloWorldHeader = document.getElementById("helloWorldHeader") as HTMLHeadingElement;
+const cricle = document.getElementById("circle") as unknown as SVGCircleElement;
 
-helloWorldHeader.innerText += "!";
+cricle.addEventListener('click', () =>{
+   cricle.setAttribute('fill','black'); 
+})
