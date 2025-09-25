@@ -23,7 +23,7 @@ calcButton.addEventListener('click', () => {
     counter.textContent = `${inputNumber}`;
   } else if (operation === '/') {
     inputNumber = parseInt(first.value) / parseInt(secound.value);
-    if (first.value !== '0') {
+    if (secound.value === '0') {
       counter.textContent = 'Error!';
     } else {
       counter.textContent = `${inputNumber}`;
