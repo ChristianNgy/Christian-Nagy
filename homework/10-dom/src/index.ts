@@ -13,14 +13,20 @@ select.addEventListener('change', () => {
 
 calcButton.addEventListener('click', () => {
   if (operation === '+') {
-    inputNumber = parseInt(secound.value) + parseInt(first.value);
+    inputNumber = parseInt(first.value) + parseInt(secound.value);
+    counter.textContent = `${inputNumber}`;
   } else if (operation === '-') {
-    inputNumber = parseInt(secound.value) - parseInt(first.value);
+    inputNumber = parseInt(first.value) - parseInt(secound.value);
+    counter.textContent = `${inputNumber}`;
   } else if (operation === '*') {
-    inputNumber = parseInt(secound.value) * parseInt(first.value);
+    inputNumber = parseInt(first.value) * parseInt(secound.value);
+    counter.textContent = `${inputNumber}`;
   } else if (operation === '/') {
-    inputNumber = parseInt(secound.value) / parseInt(first.value);
+    inputNumber = parseInt(first.value) / parseInt(secound.value);
+    if (first.value !== '0') {
+      counter.textContent = 'Error!';
+    } else {
+      counter.textContent = `${inputNumber}`;
+    }
   }
-
-  counter.textContent = `${inputNumber}`;
 });
