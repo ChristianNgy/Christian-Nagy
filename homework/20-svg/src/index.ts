@@ -1,18 +1,5 @@
-const select = document.getElementById('shape') as HTMLSelectElement
+const select = document.getElementById('shapeForm') as HTMLSelectElement
 const button = document.getElementById('shapeButton') as HTMLButtonElement
+const shape = document.getElementById('svg') as unknown as SVGSVGElement
 
 let shapeForm = ''
-
-select.addEventListener('change', ()=> {
-    shapeForm = select.value
-})
-
-button.addEventListener('click', () =>{
-    if(shapeForm === 'circle'){
-
-    } else if(shapeForm === 'rect'){
-        
-    } else if(shapeForm === 'triangle'){
-        
-    }
-})
