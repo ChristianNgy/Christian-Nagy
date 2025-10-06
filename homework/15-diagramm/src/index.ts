@@ -30,6 +30,9 @@ diagrammButton.addEventListener('click', () => {
     monthHeight.push(parseInt(month12.value) *  600 / 13);
     
     for (let i = 1; i <= 12; i++) {
+    if(`${monthHeight[i - 1]}` === ''){
+        monthHeight[i - 1] = 0
+    }
     const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect') as SVGRectElement;
     rect.setAttribute('fill', 'blue');
     rect.setAttribute('x', `${1 * i * 100}`);
