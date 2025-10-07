@@ -16,37 +16,36 @@ const svg = document.getElementById('svg') as unknown as SVGSVGElement;
 let monthHeight: number[] = [];
 
 diagrammButton.addEventListener('click', () => {
+  monthHeight.push((parseInt(month1.value) * 600) / 13);
+  monthHeight.push((parseInt(month2.value) * 600) / 13);
+  monthHeight.push((parseInt(month3.value) * 600) / 13);
+  monthHeight.push((parseInt(month4.value) * 600) / 13);
+  monthHeight.push((parseInt(month5.value) * 600) / 13);
+  monthHeight.push((parseInt(month6.value) * 600) / 13);
+  monthHeight.push((parseInt(month7.value) * 600) / 13);
+  monthHeight.push((parseInt(month8.value) * 600) / 13);
+  monthHeight.push((parseInt(month9.value) * 600) / 13);
+  monthHeight.push((parseInt(month10.value) * 600) / 13);
+  monthHeight.push((parseInt(month11.value) * 600) / 13);
+  monthHeight.push((parseInt(month12.value) * 600) / 13);
 
-    monthHeight.push(parseInt(month1.value) *  600 / 13);
-    monthHeight.push(parseInt(month2.value) *  600 / 13);
-    monthHeight.push(parseInt(month3.value) *  600 / 13);
-    monthHeight.push(parseInt(month4.value) *  600 / 13);
-    monthHeight.push(parseInt(month5.value) *  600 / 13);
-    monthHeight.push(parseInt(month6.value) *  600 / 13);
-    monthHeight.push(parseInt(month7.value) *  600 / 13);
-    monthHeight.push(parseInt(month8.value) *  600 / 13);
-    monthHeight.push(parseInt(month9.value) *  600 / 13);
-    monthHeight.push(parseInt(month10.value) *  600 / 13);
-    monthHeight.push(parseInt(month11.value) *  600 / 13);
-    monthHeight.push(parseInt(month12.value) *  600 / 13);
-    
-    svg.innerHTML = '';
-    
-    for (let i = 0; i <= 12; i++) {
-    if(`${monthHeight[i - 1]}` === ''){
-        monthHeight[i - 1] = 0
+  svg.innerHTML = '';
+
+  for (let i = 0; i <= 12; i++) {
+    if (`${monthHeight[i - 1]}` === '') {
+      monthHeight[i - 1] = 0;
     }
     const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect') as SVGRectElement;
-    if(parseInt(`${monthHeight[i]}`) > 600){
-        rect.setAttribute('fill', 'red')
-    }else if(parseInt(`${monthHeight[i]}`) <= 600){
-        rect.setAttribute('fill', 'green')
+    if (parseInt(`${monthHeight[i]}`) > 600) {
+      rect.setAttribute('fill', 'red');
+    } else if (parseInt(`${monthHeight[i]}`) <= 600) {
+      rect.setAttribute('fill', 'green');
     }
     rect.setAttribute('x', `${1 * i * 100}`);
     rect.setAttribute('y', `${550 - parseInt(`${monthHeight[i]}`)}`);
     rect.setAttribute('width', `${90}`);
     rect.setAttribute('height', `${monthHeight[i]}`);
     svg.appendChild(rect);
-    console.log(rect)
-}
+    console.log(rect);
+  }
 });
