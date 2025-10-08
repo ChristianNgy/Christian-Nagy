@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>create-shapes</title>
+  </head>
+  <body>
+    <script src="./src/index.ts" type="module"></script>
+    <h1>Create Shapes</h1>
+    <svg id="svg" width="400" height="400">
+      <line x1="0" y1 ="0" x2="400" y2="0" stroke="black" stroke-width="2"></line>
+      <line x1="400" y1 ="0" x2="400" y2="400" stroke="black" stroke-width="2"></line>
+      <line x1="400" y1 ="400" x2="0" y2="400" stroke="black" stroke-width="2"></line>
+      <line x1="0" y1 ="400" x2="0" y2="0" stroke="black" stroke-width="2"></line>
+    </svg>
+    <p><strong>Spalten</strong></p>
+    <input type="number" id="spalten" />
+    <p><strong>Zeilen</strong></p>
+    <input type="number" id="zeilen" />
+    <select name="shapeForm" id="shapeForm">
+      <option value="round">round</option>
+      <option value="square">square</option>
+    </select>
+    <button id="generator">generate Shape</button>
+  </body>
+</html>
