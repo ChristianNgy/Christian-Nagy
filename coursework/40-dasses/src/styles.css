@@ -1,0 +1,50 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;          /* Enable flexbox for centering the content */
+    flex-direction: column; /* Display h1 and game area below each other */
+    align-items: center;    /* Center the content horizontally */
+}
+
+#gameArea {
+    display: flex;          /* Enable flexbox for centering the content */
+    flex-direction: column; /* Display game board and message below each other */
+    align-items: center;    /* Center the content horizontally */
+    gap: 1rem;              /* Add some space between the game board and message */
+}
+
+.column-control {
+    display: flex;          /* Enable flexbox for centering the content */
+    justify-content: center;/* Center the content horizontally */
+    font-size: 1.5rem;      /* Make pointer down icon bigger */
+    cursor: pointer;        /* Show a pointer when the user hovers over the control with the mouse */
+    color: white;
+}
+
+.column-control:hover {
+    /* Hightlight the control when the user hovers over it with the mouse */
+    color: yellow;
+}
+
+#board {
+    display: grid;          /* Enable grid layout for the board */
+    grid-template-columns: repeat(7, 1fr); /* Create 7 columns */
+    gap: 0.5rem;            /* Add some space between the cells */
+    padding: 0.5rem;        /* Add some padding around the board */
+    background-color: #0d47a1; /* Set the background color of the board */
+    border-radius: 0.5rem;  /* Round the corners of the board */
+}
+
+.cell {
+    background-color: white;
+    border-radius: 50%;     /* Make the cells circular */
+    width: 35px;
+    height: 35px;
+}
+
+.cell.red {
+    background-color: red;
+}
+
+.cell.yellow {
+    background-color: yellow;
+}
