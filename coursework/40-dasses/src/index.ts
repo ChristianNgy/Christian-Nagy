@@ -8,6 +8,8 @@ class ConnectFourGame {
   private currentPlayer: Player = 'red';
   private board: Cellstate[][] = [];
   private cellElements: HTMLDivElement[][] = [];
+  private circleCounter = 0;
+  private win = document.getElementById('win') as HTMLParagraphElement;
 
   constructor() {
     this.boardElement = document.getElementById('colored-rect') as HTMLDivElement;
@@ -32,6 +34,16 @@ class ConnectFourGame {
     }
     return -1;
   }
+
+  private findAvailableColumn(row: number): number {
+    for (let column = 0; column >= 7; column++) {
+      if (this.board[row]![column] === 'empty') {
+        return column;
+      }
+    }
+    return -1;
+  }
+
   private createColumnControls() {
     for (let i = 0; i < 7; i++) {
       const control = document.createElement('div');
@@ -59,15 +71,45 @@ class ConnectFourGame {
     if (this.currentPlayer === 'red') {
       this.cellElements[targetRow]![columnIndex]!.classList.add('red');
       this.board[targetRow]![columnIndex] = 'red';
-      this.switchPlayer()
-    }else if (this.currentPlayer === 'yellow') {
+      if (this.circleCounter !== 4) {
+        if (this.check(targetRow, columnIndex) === 1) {
+          this.circleCounter++;
+          console.log(this.circleCounter);
+        } else if (this.check(targetRow, columnIndex) === -1) {
+          this.circleCounter = 0;
+        }
+      } else if (this.circleCounter === 4) {
+        this.win.textContent = `${this.currentPlayer} has won`;
+      }
+      this.switchPlayer();
+    } else if (this.currentPlayer === 'yellow') {
       this.cellElements[targetRow]![columnIndex]!.classList.add('yellow');
       this.board[targetRow]![columnIndex] = 'yellow';
-      this.switchPlayer()
+      if (this.circleCounter !== 4) {
+        if (this.check(targetRow, columnIndex) === 1) {
+          this.circleCounter++;
+          console.log(this.circleCounter);
+        } else if (this.check(targetRow, columnIndex) === -1) {
+          this.circleCounter = 0;
+        }
+      } else if (this.circleCounter === 4) {
+        this.win.textContent = `${this.currentPlayer} has won`;
+      }
+      this.switchPlayer();
     }
   }
+
+  private check(rowIndex: number, columnIndex: number): number {
+    for (let i = -4; i < 4; i++) {
+      if (this.findAvailableRow(columnIndex + i) === -1 && this.findAvailableColumn(rowIndex + i) !== -1) {
+        return 1;
+      }
+    }
+    return -1;
+  }
+
   private switchPlayer() {
-    if ((this.currentPlayer === 'red')) {
+    if (this.currentPlayer === 'red') {
       this.currentPlayer = 'yellow';
     } else {
       this.currentPlayer = 'red';
