@@ -71,43 +71,47 @@ class ConnectFourGame {
     if (this.currentPlayer === 'red') {
       this.cellElements[targetRow]![columnIndex]!.classList.add('red');
       this.board[targetRow]![columnIndex] = 'red';
-      if (this.circleCounter !== 4) {
-        if (this.check(targetRow, columnIndex) === 1) {
-          this.circleCounter++;
-          console.log(this.circleCounter);
-        } else if (this.check(targetRow, columnIndex) === -1) {
-          this.circleCounter = 0;
-        }
-      } else if (this.circleCounter === 4) {
-        this.win.textContent = `${this.currentPlayer} has won`;
+      if (this.check(targetRow, columnIndex) === 1) {
+        this.circleCounter++;
+        console.log(this.circleCounter);
+      } else if (this.check(targetRow, columnIndex) === -1) {
+        this.circleCounter = 0;
+      }
+      if (this.circleCounter === 4) {
+        this.win.textContent = `red has won`;
       }
       this.switchPlayer();
     } else if (this.currentPlayer === 'yellow') {
       this.cellElements[targetRow]![columnIndex]!.classList.add('yellow');
       this.board[targetRow]![columnIndex] = 'yellow';
-      if (this.circleCounter !== 4) {
-        if (this.check(targetRow, columnIndex) === 1) {
-          this.circleCounter++;
-          console.log(this.circleCounter);
-        } else if (this.check(targetRow, columnIndex) === -1) {
-          this.circleCounter = 0;
-        }
-      } else if (this.circleCounter === 4) {
-        this.win.textContent = `${this.currentPlayer} has won`;
+      if (this.check(targetRow, columnIndex) === 1) {
+        this.circleCounter++;
+        console.log(this.circleCounter);
+      } else if (this.check(targetRow, columnIndex) === -1) {
+        this.circleCounter = 0;
+      }
+      if (this.circleCounter === 4) {
+        this.win.textContent = `yellow has won`;
       }
       this.switchPlayer();
     }
   }
 
   private check(rowIndex: number, columnIndex: number): number {
-    for (let i = -4; i < 4; i++) {
-      if (this.findAvailableRow(columnIndex + i) === -1 && this.findAvailableColumn(rowIndex + i) !== -1) {
-        return 1;
+    let found = -1;
+    for (let x = 8; x < 0; x--) {
+      if (this.findAvailableRow(columnIndex - x) === -1 && this.findAvailableColumn(rowIndex - x) === -1) {
+        found = -1;
+      } else if (this.findAvailableRow(columnIndex - x) === -1) {
+        found = -1;
+      } else if (this.findAvailableColumn(rowIndex - x) === -1) {
+        found = -1;
+      } else {
+        found = 1;
       }
     }
-    return -1;
+    return found;
   }
-
   private switchPlayer() {
     if (this.currentPlayer === 'red') {
       this.currentPlayer = 'yellow';
