@@ -1,0 +1,39 @@
+#chessboard{
+  font-size: 0.75rem;
+}
+
+.square{
+  width: 20px;
+  height: 20px;
+}
+
+.board-row, .column-labels{
+  display: flex;
+  flex-direction: row;
+}
+
+.row-label{
+  width: 40px;
+  height: 20px;
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 5px;
+  align-items: center;
+}
+
+.column-label{
+  width: 20px;
+  height: 20px;
+  margin-top: 3px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.dark{
+  background-color: rgb(54, 38, 24);
+}
+
+.light{
+  background-color: burlywood;
+}
