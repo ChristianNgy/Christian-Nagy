@@ -1,123 +1,36 @@
 import './styles.css';
 
-type Player = 'red' | 'yellow';
-type Cellstate = Player | 'empty';
+type Player = 'red' | 'blue'
+type Cellstate = Player | 'empty'
 
 class ConnectFourGame {
   private boardElement: HTMLDivElement;
-  private currentPlayer: Player = 'red';
-  private board: Cellstate[][] = [];
-  private cellElements: HTMLDivElement[][] = [];
-  private circleCounter = 0;
-  private win = document.getElementById('win') as HTMLParagraphElement;
+  private currentPlayer: Player = 'red'
+  private board: Cellstate[][] = []
+  private cellElements: HTMLDivElement
 
-  constructor() {
-    this.boardElement = document.getElementById('colored-rect') as HTMLDivElement;
-    this.createColumnControls();
-    this.createBoardCells();
-    this.createEmptyBoard();
-  }
-  private createEmptyBoard() {
-    for (let row = 0; row < 6; row++) {
-      let r: Cellstate[] = [];
-      for (let column = 0; column < 7; column++) {
-        r.push('empty');
-      }
-      this.board.push(r);
-    }
-  }
-  private findAvailableRow(column: number): number {
-    for (let row = 5; row >= 0; row--) {
-      if (this.board[row]![column] === 'empty') {
-        return row;
-      }
-    }
-    return -1;
+  constructor(){
+    this.createEmptyBoard()
   }
 
-  private findAvailableColumn(row: number): number {
-    for (let column = 0; column >= 7; column++) {
-      if (this.board[row]![column] === 'empty') {
-        return column;
+  private createEmptyBoard(){
+    for(let row = 0; row < 6; row ++){
+      let r: Cellstate[] = []
+      for(let column = 0; column < 7; column ++){
+        r.push('empty')
       }
-    }
-    return -1;
-  }
-
-  private createColumnControls() {
-    for (let i = 0; i < 7; i++) {
-      const control = document.createElement('div');
-      control.className = 'column-control';
-      control.textContent = '⬇';
-      control.addEventListener('click', () => this.handleColumnClick(i));
-      this.boardElement.appendChild(control);
-    }
-  }
-  private createBoardCells() {
-    // we create 6 rows and 7 columns of white circles(divs)
-    for (let row = 0; row < 6; row++) {
-      const rowElements: HTMLDivElement[] = [];
-      for (let column = 0; column < 7; column++) {
-        const cell = document.createElement('div');
-        cell.className = 'cell';
-        this.boardElement.appendChild(cell);
-        rowElements.push(cell);
-      }
-      this.cellElements.push(rowElements);
-    }
-  }
-  private handleColumnClick(columnIndex: number) {
-    const targetRow = this.findAvailableRow(columnIndex);
-    if (this.currentPlayer === 'red') {
-      this.cellElements[targetRow]![columnIndex]!.classList.add('red');
-      this.board[targetRow]![columnIndex] = 'red';
-      if (this.check(targetRow, columnIndex) === 1) {
-        this.circleCounter++;
-        console.log(this.circleCounter);
-      } else if (this.check(targetRow, columnIndex) === -1) {
-        this.circleCounter = 0;
-      }
-      if (this.circleCounter === 4) {
-        this.win.textContent = `red has won`;
-      }
-      this.switchPlayer();
-    } else if (this.currentPlayer === 'yellow') {
-      this.cellElements[targetRow]![columnIndex]!.classList.add('yellow');
-      this.board[targetRow]![columnIndex] = 'yellow';
-      if (this.check(targetRow, columnIndex) === 1) {
-        this.circleCounter++;
-        console.log(this.circleCounter);
-      } else if (this.check(targetRow, columnIndex) === -1) {
-        this.circleCounter = 0;
-      }
-      if (this.circleCounter === 4) {
-        this.win.textContent = `yellow has won`;
-      }
-      this.switchPlayer();
+      this.board.push(r)
     }
   }
 
-  private check(rowIndex: number, columnIndex: number): number {
-    let found = -1;
-    for (let x = 8; x < 0; x--) {
-      if (this.findAvailableRow(columnIndex - x) === -1 && this.findAvailableColumn(rowIndex - x) === -1) {
-        found = -1;
-      } else if (this.findAvailableRow(columnIndex - x) === -1) {
-        found = -1;
-      } else if (this.findAvailableColumn(rowIndex - x) === -1) {
-        found = -1;
-      } else {
-        found = 1;
+    private findAvailableRow(column: number): number{
+      for(let row = 0; row < 6; row ++){
+        if(this.board[row]![column] === 'empty'){
+          return row
+        }
       }
+      return -1
     }
-    return found;
-  }
-  private switchPlayer() {
-    if (this.currentPlayer === 'red') {
-      this.currentPlayer = 'yellow';
-    } else {
-      this.currentPlayer = 'red';
-    }
-  }
+  
+    
 }
-const game = new ConnectFourGame();

@@ -1,0 +1,12 @@
+#circle-label{
+  width: 20px;
+  height: 20px;
+}
+
+.row-labels{
+  width: 200px;
+  height: 20px;
+  display: flex;
+  flex-direction: row;
+  border-radius: 50%;
+}
