@@ -1,6 +1,7 @@
 export abstract class Ball {
   protected readonly box: HTMLDivElement;
   protected element: HTMLDivElement;
+  protected element2!: HTMLDivElement;
   protected readonly x: number;
   protected y: number;
   protected size: number;
@@ -124,14 +125,21 @@ export class Egg extends Ball {
   constructor(box: HTMLDivElement, x: number, size: number) {
     super(box, x, size, 'white');
   }
-
-
+  
   get bounciness(): number {
     return 0;
   }
-
+  
   protected onReachedBottom(): boolean {
     this.y = this.box.clientHeight
+    if(!this.element2){
+      this.element2 = document.createElement('div');
+      this.element2.className = 'inneregg';
+      this.element2.style.width = `10px`;
+      this.element2.style.height = `10px`;
+      this.element2.style.backgroundColor = 'yellow';
+      this.element.appendChild(this.element2);
+    }
     setTimeout(() => this.element.remove(), 1000);
     return true;
   }

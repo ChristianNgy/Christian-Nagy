@@ -59,3 +59,10 @@ button {
 button:hover {
     background-color: #6a6a8a;
 }
+
+.inneregg{
+    background-color: yellow;
+    position: absolute;
+    border-radius: 50%;
+    margin: 15px;
+}
