@@ -113,10 +113,10 @@ export class LightBall extends Ball {
   get bounciness(): number {
     return 0.7;
   }
-  private colors = ['red', 'blue','cyan', 'yellow', 'green', 'lightblue']
+  private colors = ['red', 'blue', 'cyan', 'yellow', 'green', 'lightblue'];
 
   protected onReachedBottom(): boolean {
-    this.element.style.backgroundColor = `${this.colors[Math.floor(Math.random() * this.color.length)]}`
+    this.element.style.backgroundColor = `${this.colors[Math.floor(Math.random() * this.color.length)]}`;
     return true;
   }
 }
@@ -125,14 +125,14 @@ export class Egg extends Ball {
   constructor(box: HTMLDivElement, x: number, size: number) {
     super(box, x, size, 'white');
   }
-  
+
   get bounciness(): number {
     return 0;
   }
-  
+
   protected onReachedBottom(): boolean {
-    this.y = this.box.clientHeight
-    if(!this.element2){
+    this.y = this.box.clientHeight;
+    if (!this.element2) {
       this.element2 = document.createElement('div');
       this.element2.className = 'inneregg';
       this.element2.style.width = `10px`;
