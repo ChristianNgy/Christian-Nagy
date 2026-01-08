@@ -1,0 +1,46 @@
+body{
+    font-family: sans-serif;
+    background-color: antiquewhite;
+}
+
+#app-container{
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+#tool-container{
+    width: 150px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px;
+
+    /*Nested CSS*/
+    button{
+        border-radius: 4px;
+        background-color: white;
+        padding: 10px;
+        border: 1px solid lightgrey;
+
+        &:hover{
+            background-color: lightgrey;
+        }
+
+        &.selected{
+            background-color: green;
+            color: white;
+            border-color: green;
+        }
+    }
+}
+
+#drawing-canvas{
+}
+
+.widget{
+    border-radius: 8px;
+    box-shadow: 0 2px 10px gray;
+    background-color: whitesmoke;
+}
