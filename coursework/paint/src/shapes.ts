@@ -9,16 +9,23 @@ export type Point = {
 
 export class Circle extends Shape {
   private center: Point = { x: 0, y: 0 };
-  private radius = 0;
-  
+  private radius = 0
+  private circleElement: SVGCircleElement;
   constructor(protected svgContainer: SVGSVGElement, protected start: Point) {
     super(svgContainer, start);
-    const circleElement = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-    circleElement.setAttribute('cx', `${start.x}`);
-    circleElement.setAttribute('cy', `${start.y}`);
-    circleElement.setAttribute('color', 'red');
-    circleElement.setAttribute('r', '100');
-    svgContainer.appendChild(circleElement);
+    this.circleElement = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    this.circleElement.setAttribute('cx', `${start.x}`);
+    this.circleElement.setAttribute('cy', `${start.y}`);
+    this.circleElement.setAttribute('fill', 'red');
+    svgContainer.appendChild(this.circleElement);
+  }
+
+  public setRadiusFromPoint(p: Point): void {
+    const dx = p.x - this.start.x;
+    const dy = p.y - this.start.y;
+    const r = Math.sqrt(dx * dx + dy * dy);
+    this.radius = r;
+    this.circleElement.setAttribute('r', `${r}`);
   }
 }
 
