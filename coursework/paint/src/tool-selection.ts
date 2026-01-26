@@ -2,7 +2,8 @@ export enum ToolType {
   CIRCLE,
   RECTANGLE,
   POINTER,
-  ELLIPSE,
+  TRIANGLE,
+  LINE,
 }
 
 type ToolChangeCallback = (tool: ToolType) => void;
@@ -15,8 +16,9 @@ export class ToolSelection {
 
     this.toolContainer.appendChild(this.createToolButton(ToolType.CIRCLE, 'Circle'));
     this.toolContainer.appendChild(this.createToolButton(ToolType.RECTANGLE, 'Rectangle'));
+    this.toolContainer.appendChild(this.createToolButton(ToolType.TRIANGLE, 'Triangle'));
+    this.toolContainer.appendChild(this.createToolButton(ToolType.LINE, 'Line'));
     this.toolContainer.appendChild(this.createToolButton(ToolType.POINTER, 'Pointer'));
-    this.toolContainer.appendChild(this.createToolButton(ToolType.ELLIPSE, 'Ellipse'));
   }
 
   private createToolButton(toolType: ToolType, label: string, isSelected: boolean = false): HTMLButtonElement {

@@ -1,4 +1,4 @@
-import { Circle, Shape, Point, Rectangle } from './shapes';
+import { Circle, Shape, Point, Rectangle, Triangle, Line } from './shapes';
 import { ToolType } from './tool-selection';
 
 type DrawingState = {
@@ -24,13 +24,11 @@ export class ShapeManager {
   private handlePointerMouseDown(event: MouseEvent) {
     const start = this.getSVGCoordinates(event);
     this.unselect();
-    for (let i = this.shapes.length; i >= 0; i--) {
+    for (let i = this.shapes.length - 1; i >= 0; i--) {
       if (this.shapes[i]!.contains(start)) {
         this.shapes[i]!.clicked = true;
         return;
-      } else {
-        this.shapes[i]!.clicked = false;
-      }
+      } 
     }
   }
 
@@ -47,8 +45,12 @@ export class ShapeManager {
     let newShape: Shape;
     if (this.currentToolType === ToolType.CIRCLE) {
       newShape = new Circle(this.container, start);
-    } else {
+    } else if(this.currentToolType === ToolType.RECTANGLE) {
       newShape = new Rectangle(this.container, start);
+    } else if(this.currentToolType === ToolType.TRIANGLE){
+      newShape = new Triangle(this.container, start);
+    } else{
+      newShape = new Line(this.container,start)
     }
     newShape.tempMode = true;
     this.shapes.push(newShape);
@@ -103,7 +105,7 @@ export class ShapeManager {
   }
   private unselect() {
     for (let i = 0; i < this.shapes.length; i++) {
-      this.shapes[i]!.clicked === false;
+      this.shapes[i]!.clicked = false;
     }
   }
 }

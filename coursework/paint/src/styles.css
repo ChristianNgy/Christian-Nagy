@@ -53,8 +53,13 @@ body{
         opacity: 0.5;
         stroke: darkred;
     }
+    Polygon{
+        fill: lightgreen;
+        stroke: green;
+    }
     .clicked{
         stroke: yellow;
+        stroke-width: 3px;
     }
 }
 
