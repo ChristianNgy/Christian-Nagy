@@ -37,7 +37,27 @@ body{
 }
 
 #drawing-canvas{
+    Circle {
+        fill: blue;
+        stroke: darkblue;
+    }
+    Circle.temp{
+        opacity: 0.5;
+        fill: blue;
+    }
+    Rect{
+        fill: red;
+        stroke: darkred
+    }
+    Rect.temp{
+        opacity: 0.5;
+        stroke: darkred;
+    }
+    .clicked{
+        stroke: yellow;
+    }
 }
+
 
 .widget{
     border-radius: 8px;
