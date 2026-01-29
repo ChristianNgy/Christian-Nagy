@@ -118,19 +118,31 @@ export class Rectangle extends Shape {
   }
 }
 
+// ...existing code...
 export class Line extends Shape {
-  private lineElement: SVGLineElement
-   constructor(
+  private startPoint: Point;
+  private endPoint: Point;
+  private lineElement: SVGLineElement;
+  constructor(
     protected svgContainer: SVGSVGElement,
     protected start: Point,
-  ){
+  ) {
     super(svgContainer, start);
+    this.startPoint = start;
+    this.endPoint = start;
     this.lineElement = document.createElementNS('http://www.w3.org/2000/svg', 'line');
     svgContainer.appendChild(this.lineElement);
   }
 
   public override updatePosition(start: Point, end: Point): void {
-    
+    // wichtig: interne Punkte aktualisieren, sonst contains() arbeitet mit alten Werten
+    this.startPoint = start;
+    this.endPoint = end;
+
+    this.lineElement.setAttribute('x1', `${start.x}`);
+    this.lineElement.setAttribute('y1', `${start.y}`);
+    this.lineElement.setAttribute('x2', `${end.x}`);
+    this.lineElement.setAttribute('y2', `${end.y}`);
   }
 
   public override set tempMode(isTemp: boolean) {
@@ -141,7 +153,7 @@ export class Line extends Shape {
     }
   }
 
-    public override set clicked(clicked: boolean) {
+  public override set clicked(clicked: boolean) {
     if (clicked) {
       this.lineElement.classList.add('clicked');
     } else {
@@ -150,9 +162,37 @@ export class Line extends Shape {
   }
 
   public override contains(p: Point): boolean {
-    
+    const x1 = this.startPoint.x;
+    const y1 = this.startPoint.y;
+    const x2 = this.endPoint.x;
+    const y2 = this.endPoint.y;
+
+    const dx = x2 - x1;
+    const dy = y2 - y1;
+    const len2 = dx * dx + dy * dy;
+
+    // Toleranz in SVG-Einheiten (bei Bedarf anpassen)
+    const tolerance = 5;
+    const tol2 = tolerance * tolerance;
+
+    if (len2 === 0) {
+      // Linie hat Länge 0 -> Kreis um den Punkt prüfen
+      const dist2 = (p.x - x1) * (p.x - x1) + (p.y - y1) * (p.y - y1);
+      return dist2 <= tol2;
+    }
+
+    // Projektion von p auf die Linie (parametrisch t in [0,1])
+    let t = ((p.x - x1) * dx + (p.y - y1) * dy) / len2;
+    t = Math.max(0, Math.min(1, t));
+
+    const projX = x1 + t * dx;
+    const projY = y1 + t * dy;
+
+    const dist2 = (p.x - projX) * (p.x - projX) + (p.y - projY) * (p.y - projY);
+    return dist2 <= tol2;
   }
 }
+// ...existing code...
 
 export class Triangle extends Shape {
   private position1: Point = { x: 0, y: 0 };
@@ -166,25 +206,31 @@ export class Triangle extends Shape {
   ) {
     super(svgContainer, start);
     this.triangleElement = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+    // default styling (sichtbar machen)
+    this.triangleElement.setAttribute('stroke', 'black');
+    this.triangleElement.setAttribute('fill', 'transparent');
+    this.triangleElement.setAttribute('stroke-width', '2');
     svgContainer.appendChild(this.triangleElement);
   }
 
   public override updatePosition(start: Point, end: Point): void {
+    // Erzeuge ein gleichschenkliges Dreieck mit Spitze bei start und Basis symmetrisch um start.x
     this.size.whidth = (end.x - start.x) * 2;
-    this.size.height = (start.y - end.y) * 2;
+    this.size.height = Math.abs(start.y - end.y) * 2;
 
     this.position1.x = start.x;
     this.position1.y = start.y;
+
     this.position2.x = end.x;
     this.position2.y = end.y;
+
+    // linke Basis berechnen (symmetrisch zur position2)
     this.position3.x = this.position2.x - this.size.whidth;
     this.position3.y = end.y;
 
     this.triangleElement.setAttribute(
       'points',
-      `${this.position1.x}, ${this.position1.y}
-      ${this.position2.x}, ${this.position2.y} 
-      ${this.position3.x}, ${this.position3.y}`,
+      `${this.position1.x},${this.position1.y} ${this.position2.x},${this.position2.y} ${this.position3.x},${this.position3.y}`,
     );
   }
 
@@ -196,33 +242,24 @@ export class Triangle extends Shape {
     }
   }
 
+  // Punkt-in-Dreieck Test (baryzentrischer / sign test)
   public override contains(p: Point): boolean {
-    let s: number[][] = [];
-    let i: number[][] = [];
-    for (let x = this.position3.x; x <= this.position2.x; x++) {
-      for (let y = this.position3.y; y >= this.position1.y; y--) {
-        if (i[p.x]![p.y]! >= s[x]![y]!) {
-          if (x || y) {
-            return true;
-          }
-        }
-      }
-    }
-    return false;
+    const a = this.position1;
+    const b = this.position2;
+    const c = this.position3;
 
-    // if(this.position3.x){
+    // falls Degeneriert (keine Fläche) -> false
+    const area2 = (b.x - a.x) * (c.y - a.y) - (c.x - a.x) * (b.y - a.y);
+    if (Math.abs(area2) < 1e-6) return false;
 
-    //   for(let x = this.position3.x; x <= this.position2.x; x ++){
-    //     for(let y = this.position3.y; y >= this.position1.y; y --){
-    //       const s: Point = {x: x, y: y}
-    //       if(p.x >= s.x && p.x <= s.x + this.size.whidth && p.y >= s.y && p.y <= s.y + this.size.height){
-    //         return true
-    //       } else{
-    //         return false
-    //       }
-    //     }
-    //   }
-    // }
+    const sign = (p1: Point, p2: Point, p3: Point) =>
+      (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
+
+    const b1 = sign(p, a, b) < 0.0;
+    const b2 = sign(p, b, c) < 0.0;
+    const b3 = sign(p, c, a) < 0.0;
+
+    return (b1 === b2) && (b2 === b3);
   }
 
   public override set clicked(clicked: boolean) {
