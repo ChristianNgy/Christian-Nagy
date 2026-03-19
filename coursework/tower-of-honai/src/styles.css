@@ -1,0 +1,38 @@
+body {
+  background-color: #0f172a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 140vh;
+  flex-direction: column;
+}
+
+#svg {
+  background-color: #0f172a;
+}
+
+#reset {
+  background-color: red;
+  stroke: red;
+  color: white;
+}
+
+#moves {
+  background-color: lightgrey;
+  stroke: grey;
+  color: white;
+}
+
+.buttons {
+  width: 75px;
+  height: 30px;
+  border-radius: 15px;
+  display: flex;
+  text-align: center;
+}
+
+#button2 {
+  margin-right: 335px;
+  margin-left: 335px;
+  text-align: center;
+}
