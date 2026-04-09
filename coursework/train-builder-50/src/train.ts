@@ -80,7 +80,9 @@ export class Train {
                 this.addPassenger();
                 break;
             case 'cargo':
-                this.addCargo();
+                if (this.checkWeight()) {
+                    this.addCargo();
+                }
                 break;
             case 'dining':
                 this.addDining();
@@ -104,6 +106,22 @@ export class Train {
         this.render();
     }
 
+    private checkWeight(): boolean {
+        let check = true;
+        for (let i = 0; i < this.items.length; i++) {
+            for (let x = i + 1; x < this.items.length; x++) {
+                for (let y = x + 1; y < this.items.length; y++) {
+                    if (
+                        this.items[i] === this.items[x] &&
+                        this.items[i] === this.items[y]
+                    ) {
+                        check = false;
+                    }
+                }
+            }
+        }
+        return check;
+    }
     private addLocomotive() {
         const loco = new Locomotive();
         this.items.push(loco);
@@ -157,7 +175,7 @@ export class PassengerWagon extends TrainPart {
 }
 
 export class CargoWagon extends TrainPart {
-    private x = 0;
+    public x = 0;
     constructor() {
         super();
         this.x + 35;
@@ -170,19 +188,7 @@ export class CargoWagon extends TrainPart {
         cargowagon.textContent = 'cargo wagon \n 35 t';
         return cargowagon;
     }
-
-    // override cargoWeightTons(): number {
-    //     return this.x;
-    // }
     readonly restriction: PartRestriction = PartRestriction.None;
-
-    // private checkWeight(weight: number): boolean {
-    //     if (weight <= 3 * 35) {
-    //         return true;
-    //     } else {
-    //         return false;
-    //     }
-    // }
 }
 
 export class DiningWagon extends TrainPart {
