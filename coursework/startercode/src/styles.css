@@ -28,6 +28,23 @@ body {
   gap: 12px;
   margin-top: 8px;
 }
+.row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.row-title {
+  width: 80px;
+  text-transform: capitalize;
+  font-weight: 600;
+  align-self: center;
+}
+.row-cards {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
 .uno-card {
   width: 140px;
   height: 200px;

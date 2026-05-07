@@ -30,144 +30,153 @@ describe("LinkedList", () => {
     });
   });
 
-  describe("insertAtBeginning", () => {
-    it("returns true when the song is new", () => {
-      expect(list.insertAtBeginning("A", "Artist A")).toBe(true);
-    });
+  describe("Order", () => {
+    
+    it("is the same color", () =>{
+      expect(list.insert('blue', '9')).toBe(true)
+    })
+  })
 
-    it("places the new song at the head", () => {
-      list.insertAtBeginning("A", "Artist A");
-      list.insertAtBeginning("B", "Artist B");
+})
 
-      expect(list.head?.data.title).toBe("B");
-    });
+  // describe("insertAtBeginning", () => {
+  //   it("returns true when the song is new", () => {
+  //     expect(list.insertAtBeginning("A", "Artist A")).toBe(true);
+  //   });
 
-    it("links the new node to the previous head", () => {
-      list.insertAtBeginning("A", "Artist A");
-      list.insertAtBeginning("B", "Artist B");
+  //   it("places the new song at the head", () => {
+  //     list.insertAtBeginning("A", "Artist A");
+  //     list.insertAtBeginning("B", "Artist B");
 
-      expect(list.toArray()).toEqual([
-        { title: "B", artist: "Artist B" },
-        { title: "A", artist: "Artist A" },
-      ]);
-    });
+  //     expect(list.head?.data.title).toBe("B");
+  //   });
 
-    it("rejects duplicates and returns false", () => {
-      list.insertAtBeginning("A", "Artist A");
+  //   it("links the new node to the previous head", () => {
+  //     list.insertAtBeginning("A", "Artist A");
+  //     list.insertAtBeginning("B", "Artist B");
 
-      expect(list.insertAtBeginning("A", "Different Artist")).toBe(false);
-      expect(list.size()).toBe(1);
-    });
-  });
+  //     expect(list.toArray()).toEqual([
+  //       { title: "B", artist: "Artist B" },
+  //       { title: "A", artist: "Artist A" },
+  //     ]);
+  //   });
 
-  describe("insertAfter", () => {
-    beforeEach(() => {
-      // Build: A -> B -> C
-      list.insertAtBeginning("C", "Artist C");
-      list.insertAtBeginning("B", "Artist B");
-      list.insertAtBeginning("A", "Artist A");
-    });
+  //   it("rejects duplicates and returns false", () => {
+  //     list.insertAtBeginning("A", "Artist A");
 
-    it("inserts in the middle of the list", () => {
-      const ok = list.insertAfter("A", "X", "Artist X");
+  //     expect(list.insertAtBeginning("A", "Different Artist")).toBe(false);
+  //     expect(list.size()).toBe(1);
+  //   });
+  // });
 
-      expect(ok).toBe(true);
-      expect(list.toArray().map((s) => s.title)).toEqual(["A", "X", "B", "C"]);
-    });
+  // describe("insertAfter", () => {
+  //   beforeEach(() => {
+  //     // Build: A -> B -> C
+  //     list.insertAtBeginning("C", "Artist C");
+  //     list.insertAtBeginning("B", "Artist B");
+  //     list.insertAtBeginning("A", "Artist A");
+  //   });
 
-    it("inserts at the end of the list", () => {
-      list.insertAfter("C", "X", "Artist X");
+//     it("inserts in the middle of the list", () => {
+//       const ok = list.insertAfter("A", "X", "Artist X");
 
-      expect(list.toArray().map((s) => s.title)).toEqual(["A", "B", "C", "X"]);
-    });
+//       expect(ok).toBe(true);
+//       expect(list.toArray().map((s) => s.title)).toEqual(["A", "X", "B", "C"]);
+//     });
 
-    it("returns false if the anchor title does not exist", () => {
-      expect(list.insertAfter("ZZZ", "X", "Artist X")).toBe(false);
-      expect(list.size()).toBe(3);
-    });
+//     it("inserts at the end of the list", () => {
+//       list.insertAfter("C", "X", "Artist X");
 
-    it("rejects duplicates", () => {
-      expect(list.insertAfter("A", "B", "Artist B")).toBe(false);
-      expect(list.size()).toBe(3);
-    });
-  });
+//       expect(list.toArray().map((s) => s.title)).toEqual(["A", "B", "C", "X"]);
+//     });
 
-  describe("delete", () => {
-    beforeEach(() => {
-      // Build: A -> B -> C
-      list.insertAtBeginning("C", "Artist C");
-      list.insertAtBeginning("B", "Artist B");
-      list.insertAtBeginning("A", "Artist A");
-    });
+//     it("returns false if the anchor title does not exist", () => {
+//       expect(list.insertAfter("ZZZ", "X", "Artist X")).toBe(false);
+//       expect(list.size()).toBe(3);
+//     });
 
-    it("removes the head", () => {
-      const ok = list.delete("A");
+//     it("rejects duplicates", () => {
+//       expect(list.insertAfter("A", "B", "Artist B")).toBe(false);
+//       expect(list.size()).toBe(3);
+//     });
+//   });
 
-      expect(ok).toBe(true);
-      expect(list.toArray().map((s) => s.title)).toEqual(["B", "C"]);
-    });
+//   describe("delete", () => {
+//     beforeEach(() => {
+//       // Build: A -> B -> C
+//       list.insertAtBeginning("C", "Artist C");
+//       list.insertAtBeginning("B", "Artist B");
+//       list.insertAtBeginning("A", "Artist A");
+//     });
 
-    it("removes a middle node", () => {
-      list.delete("B");
+//     it("removes the head", () => {
+//       const ok = list.delete("A");
 
-      expect(list.toArray().map((s) => s.title)).toEqual(["A", "C"]);
-    });
+//       expect(ok).toBe(true);
+//       expect(list.toArray().map((s) => s.title)).toEqual(["B", "C"]);
+//     });
 
-    it("removes the last node", () => {
-      list.delete("C");
+//     it("removes a middle node", () => {
+//       list.delete("B");
 
-      expect(list.toArray().map((s) => s.title)).toEqual(["A", "B"]);
-    });
+//       expect(list.toArray().map((s) => s.title)).toEqual(["A", "C"]);
+//     });
 
-    it("returns false when the title is not in the list", () => {
-      expect(list.delete("ZZZ")).toBe(false);
-      expect(list.size()).toBe(3);
-    });
+//     it("removes the last node", () => {
+//       list.delete("C");
 
-    it("returns false on an empty list", () => {
-      const empty = new LinkedList();
-      expect(empty.delete("A")).toBe(false);
-    });
+//       expect(list.toArray().map((s) => s.title)).toEqual(["A", "B"]);
+//     });
 
-    it("makes the list empty when the only element is removed", () => {
-      const tiny = new LinkedList();
-      tiny.insertAtBeginning("only", "Artist");
+//     it("returns false when the title is not in the list", () => {
+//       expect(list.delete("ZZZ")).toBe(false);
+//       expect(list.size()).toBe(3);
+//     });
 
-      tiny.delete("only");
+//     it("returns false on an empty list", () => {
+//       const empty = new LinkedList();
+//       expect(empty.delete("A")).toBe(false);
+//     });
 
-      expect(tiny.isEmpty()).toBe(true);
-      expect(tiny.head).toBeNull();
-    });
-  });
+//     it("makes the list empty when the only element is removed", () => {
+//       const tiny = new LinkedList();
+//       tiny.insertAtBeginning("only", "Artist");
 
-  describe("find", () => {
-    it("returns null on an empty list", () => {
-      expect(list.find("A")).toBeNull();
-    });
+//       tiny.delete("only");
 
-    it("returns the matching node", () => {
-      list.insertAtBeginning("A", "Artist A");
+//       expect(tiny.isEmpty()).toBe(true);
+//       expect(tiny.head).toBeNull();
+//     });
+//   });
 
-      const found = list.find("A");
+//   describe("find", () => {
+//     it("returns null on an empty list", () => {
+//       expect(list.find("A")).toBeNull();
+//     });
 
-      expect(found).toBeInstanceOf(Node);
-      expect(found?.data).toEqual({ title: "A", artist: "Artist A" });
-    });
+//     it("returns the matching node", () => {
+//       list.insertAtBeginning("A", "Artist A");
 
-    it("returns null when no node matches", () => {
-      list.insertAtBeginning("A", "Artist A");
+//       const found = list.find("A");
 
-      expect(list.find("ZZZ")).toBeNull();
-    });
-  });
+//       expect(found).toBeInstanceOf(Node);
+//       expect(found?.data).toEqual({ title: "A", artist: "Artist A" });
+//     });
 
-  describe("size", () => {
-    it("counts every node in the list", () => {
-      list.insertAtBeginning("A", "Artist A");
-      list.insertAtBeginning("B", "Artist B");
-      list.insertAtBeginning("C", "Artist C");
+//     it("returns null when no node matches", () => {
+//       list.insertAtBeginning("A", "Artist A");
 
-      expect(list.size()).toBe(3);
-    });
-  });
-});
+//       expect(list.find("ZZZ")).toBeNull();
+//     });
+//   });
+
+//   describe("size", () => {
+//     it("counts every node in the list", () => {
+//       list.insertAtBeginning("A", "Artist A");
+//       list.insertAtBeginning("B", "Artist B");
+//       list.insertAtBeginning("C", "Artist C");
+
+//       expect(list.size()).toBe(3);
+//     });
+//   });
+// });

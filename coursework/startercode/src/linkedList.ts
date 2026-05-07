@@ -14,138 +14,116 @@ export class Node {
 export class LinkedList {
   head: Node | null = null;
 
-  // Insert am Ende -> Erhält Einfügereihenfolge
-  insertAtEnd(color: string, num: string): void {
-    const node = new Node({ color, num });
-    if (this.head === null) {
-      this.head = node;
-      return;
-    }
-    let cur = this.head;
-    while (cur.next !== null) cur = cur.next;
-    cur.next = node;
-  }
-
-  // Optional: insert am Anfang
-  insertAtBeginning(color: string, num: string): void {
-    const node = new Node({ color, num });
-    node.next = this.head;
-    this.head = node;
-  }
-
-  findByColor(color: string): Node | null {
-    let cur = this.head;
-    while (cur) {
-      if (cur.data.color === color) {
-        return cur;
+  // returns the first Node in the list with the speciefied color, null if not found
+  find(color: string): Node | null {
+    let current = this.head;
+    while (current !== null) {
+      if (current.data.color === color) {
+        return current;
       }
-      cur = cur.next;
+      current = current.next;
     }
     return null;
   }
 
-  deleteByColor(color: string): boolean {
-    if (!this.head) return false;
-    if (this.head.data.color === color) {
-      this.head = this.head.next;
+  insert(color: string, num: string): boolean {
+    // Fall: Liste ist komplett leer
+    if (this.head === null) {
+      // Wenn Liste leer ist, fügen wir die Karte zu head hinzu
+      // TODO: Implementieren
+      const newNode = new Node({ color, num });
+      newNode.next = this.head;
+      this.head = newNode;
       return true;
     }
-    let prev = this.head;
-    let cur = this.head.next;
-    while (cur) {
-      if (cur.data.color === color) {
-        prev.next = cur.next;
-        return true;
+
+    // Fall: Liste ist nicht leer, Karte muss ganz am Anfang eingefügt werden
+    if (num < this.head.data.num) {
+      // TODO: Füge eine neue Karte hinzu
+      const newNode = new Node({ color, num });
+      newNode.next = this.head;
+      this.head = newNode;
+      return true;
+    }
+
+    // die erste Karte
+    let previous = this.head;
+    // Die Karte nach dem previous
+    let current = this.head?.next;
+    //Führe den Code, der drinnen ist aus, wenn current nicht undefiniert ist
+    while (current !== null) {
+      //Die Karte kann nicht hinzugefügt werden, wenn die Zahl größer ist als current.data.num
+      if (current!.data.num >= num) {
+        //Die previous und die current werden um eines verschoben
+        previous = current;
+        current = current.next;
       }
-      prev = cur;
-      cur = cur.next;
     }
     return false;
   }
 
-  // Gruppiert die Liste so, dass alle Karten gleicher Farbe zusammenstehen.
-  // 'order' bestimmt die Reihenfolge der Farbgruppen. Farben, die nicht in
-  // 'order' stehen, werden am Ende in ihrer ursprünglichen Reihenfolge angehängt.
-  groupByColor(order: string[]): void {
-    if (this.head === null) return;
-
-    // Buckets für jede gewünschte Farbe + Bucket für andere Farben
-    const buckets = new Map<string, { head: Node | null; tail: Node | null }>();
-    for (const c of order) buckets.set(c, { head: null, tail: null });
-    const others = { head: null as Node | null, tail: null as Node | null };
-
-    // Verteilen der Knoten in die Buckets (stabil)
-    let cur: Node | null = this.head;
-    while (cur !== null) {
-      const next = cur.next;
-      cur.next = null;
-      const color = cur.data.color;
-      if (buckets.has(color)) {
-        const b = buckets.get(color)!;
-        if (b.head === null) b.head = b.tail = cur;
-        else {
-          b.tail!.next = cur;
-          b.tail = cur;
-        }
-      } else {
-        if (others.head === null) others.head = others.tail = cur;
-        else {
-          others.tail!.next = cur;
-          others.tail = cur;
-        }
-      }
-      cur = next;
+  insertAfter(afterColor: string, color: string, num: string): boolean {
+    if (this.find(color) !== null) {
+      return false;
     }
 
-    // Zusammenfügen der Buckets in der gewünschten Reihenfolge, dann die anderen
-    let newHead: Node | null = null;
-    let newTail: Node | null = null;
-    for (const c of order) {
-      const b = buckets.get(c)!;
-      if (b.head !== null) {
-        if (newHead === null) {
-          newHead = b.head;
-          newTail = b.tail;
-        } else {
-          newTail!.next = b.head;
-          newTail = b.tail;
-        }
-      }
-    }
-    if (others.head !== null) {
-      if (newHead === null) {
-        newHead = others.head;
-        newTail = others.tail;
-      } else {
-        newTail!.next = others.head;
-        newTail = others.tail;
-      }
+    const afterNode = this.find(afterColor);
+    if (afterNode === null) {
+      return false;
     }
 
-    this.head = newHead;
+    const newNode = new Node({ color, num });
+    newNode.next = afterNode.next;
+    afterNode.next = newNode;
+    return true;
   }
 
-  toArray(): Card[] {
-    const out: Card[] = [];
-    let cur = this.head;
-    while (cur) {
-      out.push(cur.data);
-      cur = cur.next;
+  delete(color: string): boolean {
+    if (this.head === null) {
+      return false;
     }
-    return out;
+
+    if (this.head.data.color === color) {
+      this.head = this.head.next;
+      return true;
+    }
+
+    let prev = this.head;
+    let current = this.head.next;
+
+    while (current !== null) {
+      if (current.data.color === color) {
+        prev.next = current.next;
+        return true;
+      }
+      prev = current;
+      current = current.next;
+    }
+
+    return false;
   }
 
   size(): number {
-    let n = 0;
-    let cur = this.head;
-    while (cur) {
-      n++;
-      cur = cur.next;
+    let count = 0;
+    let current = this.head;
+    while (current !== null) {
+      count++;
+      current = current.next;
     }
-    return n;
+    return count;
   }
 
   isEmpty(): boolean {
     return this.head === null;
+  }
+
+  toArray(): Card[] {
+    const result: Card[] = [];
+    let current = this.head;
+    while (current !== null) {
+      result.push(current.data);
+      current = current.next;
+    }
+    return result;
   }
 }
