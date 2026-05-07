@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>UNO Karte</title>
+  <link rel="stylesheet" href="./src/styles.css">
+</head>
+<body>
+  <div id="card-div">
+    <form id="cardForm" class="form">
+      <label for="color">Farbe</label>
+      <select id="color">
+        <option value="red">rot</option>
+        <option value="yellow">gelb</option>
+        <option value="green">grün</option>
+        <option value="blue">blau</option>
+      </select>
+
+      <label for="num">Nummer / Aktion</label>
+      <input id="num" type="text" placeholder="z.B. 5, +2, SKIP" />
+
+      <button class="btn" type="submit">Karte hinzufügen</button>
+    </form>
+
+    <div id="stack" class="stack" aria-live="polite"></div>
+  </div>
+
+  <script src="./src/index.ts" type="module"></script>
+</body>
+</html>

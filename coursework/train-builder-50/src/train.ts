@@ -60,13 +60,13 @@ export abstract class TrainPart {
 export class Train {
     private items: TrainPart[] = [];
     private train: HTMLElement;
-    private Error: HTMLElement;
+    private Undo: HTMLElement;
 
     constructor() {
         this.train = document.getElementById('train') as HTMLDivElement;
-        this.Error = document.getElementById('undoBtn') as HTMLButtonElement;
+        this.Undo = document.getElementById('undoBtn') as HTMLButtonElement;
 
-        this.Error.addEventListener('click', () => {
+        this.Undo.addEventListener('click', () => {
             this.undo();
         });
     }
@@ -74,21 +74,48 @@ export class Train {
     addPart(option: string) {
         switch (option) {
             case 'locomotive':
-                this.addLocomotive();
-                break;
-            case 'passenger':
-                this.addPassenger();
-                break;
-            case 'cargo':
-                if (this.checkWeight()) {
-                    this.addCargo();
+                if (this.checkFirst()) {
+                    this.addLocomotive();
                 }
                 break;
+            case 'passenger':
+                if (this.checkFirst()) {
+                    this.errorText('locomotive must be first');
+                } else if (this.checkLast()) {
+                    this.errorText('caboose is last');
+                } else {
+                    this.addPassenger();
+                }
+                break;
+            case 'cargo':
+                if (this.checkFirst()) {
+                    this.errorText('locomotive must be first');
+                } else if (this.checkLast()) {
+                    this.errorText('caboose is last');
+                } else {
+                    if (this.checkWeight()) {
+                        this.addCargo();
+                    } else {
+                        this.errorText('Too much weight');
+                    }
+                }
+
+                break;
             case 'dining':
-                this.addDining();
+                if (this.checkFirst()) {
+                    this.errorText('locomotive must be first');
+                } else if (this.checkLast()) {
+                    this.errorText('caboose is last');
+                } else {
+                    this.addDining();
+                }
+
                 break;
             case 'caboose':
-                this.addCaboose();
+                if (this.checkLast()) {
+                    this.addCaboose();
+                } else {
+                }
                 break;
         }
         this.render();
@@ -107,25 +134,56 @@ export class Train {
     }
 
     private checkWeight(): boolean {
-        let check = true;
-        for (let i = 0; i < this.items.length; i++) {
-            for (let x = i + 1; x < this.items.length; x++) {
-                for (let y = x + 1; y < this.items.length; y++) {
-                    if (
-                        this.items[i] === this.items[x] &&
-                        this.items[i] === this.items[y]
-                    ) {
-                        check = false;
-                    }
-                }
+        let totalWeight = 0;
+
+        for (const item of this.items) {
+            totalWeight += item.cargoWeightTons;
+        }
+
+        return totalWeight < 100;
+    }
+
+    private errorText(message: string) {
+        const errorMessage = document.getElementById(
+            'message',
+        ) as HTMLDivElement;
+        errorMessage.innerHTML = '';
+        const errorTxt = document.createElement('p');
+        errorTxt.id = 'message';
+        errorTxt.textContent = `${message}`;
+        errorMessage.appendChild(errorTxt);
+    }
+
+    private checkLast(): boolean {
+        if (this.items) {
+            if (
+                this.items[this.items.length - 1]?.restriction ===
+                PartRestriction.MustBeLast
+            ) {
+                return false;
             }
         }
-        return check;
+        return true;
     }
+
+    private checkFirst(): boolean {
+        if (this.items.length === undefined) {
+            if (
+                this.items[this.items.length - 1]?.restriction ===
+                PartRestriction.MustBeFirst
+            ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private addLocomotive() {
         const loco = new Locomotive();
-        this.items.push(loco);
-        this.render();
+        if (this.items.length === 0) {
+            this.items.push(loco);
+            this.render();
+        }
     }
 
     private addPassenger() {
@@ -175,10 +233,12 @@ export class PassengerWagon extends TrainPart {
 }
 
 export class CargoWagon extends TrainPart {
-    public x = 0;
     constructor() {
         super();
-        this.x + 35;
+    }
+
+    get cargoWeightTons(): number {
+        return 35;
     }
 
     render(): HTMLElement {
